@@ -8,6 +8,8 @@ export default function App() {
   const [persons, setPersons] = useState(initialData);
   const [deleteList, setDeleteList] = useState([]);
 
+  
+
   const handlePersonList = (updatedPersonList) => {
     setPersons(updatedPersonList);
   };

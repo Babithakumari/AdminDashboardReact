@@ -63,7 +63,7 @@ const Person = ({
       isFirstRender.current = false;
       console.log("frist render");
     }
-  }, [checked, personData, AddToDeleteList, RemoveFromDeleteList]);
+  }, [checked, personData]);
 
   return (
     <tr className={checked ? "checked" : "unchecked"}>

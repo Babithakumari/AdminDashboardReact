@@ -42,3 +42,19 @@
   background-color: grey;
   color: yellow;
 }
+.page-list{
+  list-style-type:none;
+  display:flex;
+  align-items:center;
+  
+
+}
+.page-item{
+  background-color:white;
+  border:1px solid #D8D9DA;
+  border-radius:4px;
+  padding:6px 10px;
+  margin:12px;
+  font-weight:bold
+  
+}
