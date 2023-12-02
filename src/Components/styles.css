@@ -1,0 +1,39 @@
+#persons {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #persons td, #persons th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  /*#persons tr:nth-child(even){background-color: #f2f2f2;}*/
+  
+  #persons tr:hover, {background-color: #ddd;}
+  
+  #persons th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #45a29e;
+    color: white;
+  }
+
+  .action-cell{
+    
+
+  }
+  .edit-btn,.delete-btn{
+    margin:0 4px;
+    padding:4px;
+    background-color:white;
+    outline:none;
+    border:1px solid #1f2833;
+    border-radius: 6px;
+  }
+.delete-btn{
+    color:red;
+}
+  
