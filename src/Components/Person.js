@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState} from "react";
 import "./styles.css";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
@@ -7,19 +7,13 @@ const Person = ({
   personData,
   handleEdit,
   handleDelete,
-  AddToDeleteList,
-  RemoveFromDeleteList,
-  HeadChecked,
+  checked,
+  handleCheckbox
 }) => {
-  const isFirstRender = useRef(true);
 
   const [editing, setEditing] = useState(false);
   const [newPerson, setNewPerson] = useState(personData);
-  const [checked, setChecked] = useState(false);
 
-  const handleCheckbox = () => {
-    setChecked((checked) => !checked);
-  };
 
   const onEdit = () => {
     setEditing(true);
@@ -39,31 +33,11 @@ const Person = ({
   const handleInputChange = (e) => {
     setNewPerson({ ...newPerson, [e.target.name]: e.target.value });
   };
+  
+  
+  
 
-  useEffect(() => {
-    if (HeadChecked) {
-      // select all
-      setChecked(true);
-    } else {
-      //deselect all
-      setChecked(false);
-    }
-  }, [HeadChecked]);
-
-  useEffect(() => {
-    if (!isFirstRender.current) {
-      if (checked) {
-        AddToDeleteList(personData);
-        console.log("added person to delete list", personData);
-      } else if (!checked) {
-        RemoveFromDeleteList(personData);
-        console.log("removed person from delete list", personData);
-      }
-    } else {
-      isFirstRender.current = false;
-      console.log("frist render");
-    }
-  }, [checked, personData]);
+  
 
   return (
     <tr className={checked ? "checked" : "unchecked"}>
@@ -72,7 +46,7 @@ const Person = ({
           type="checkbox"
           value={personData.id}
           checked={checked}
-          onChange={handleCheckbox}
+          onChange={() => handleCheckbox(personData.id)}
         />
       </td>
       <td>

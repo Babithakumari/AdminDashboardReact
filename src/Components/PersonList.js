@@ -1,16 +1,12 @@
 import Person from "./Person";
-import { useState } from "react";
+import { useState} from "react";
 
 import "./styles.css";
-import Pagination from "./Pagination"
+import Pagination from "./Pagination";
+import { MdDelete } from "react-icons/md";
 
-
-const PersonList = ({
-  personList,
-  handlePersonList,
-  deleteList,
-  handleDeleteList,
-}) => {
+const PersonList = ({ personList, handlePersonList }) => {
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(10);
   const lastIndex = currentPage * recordsPerPage;
@@ -27,6 +23,7 @@ const PersonList = ({
     setCurrentPage(pageIndex);
   };
 
+  // update person
   const updatePerson = (updatedPerson) => {
     const updatedPersonList = personList.map((person) =>
       person.id === updatedPerson.id ? updatedPerson : person
@@ -34,6 +31,7 @@ const PersonList = ({
     handlePersonList(updatedPersonList);
   };
 
+  // delete person
   const deletePerson = (personId) => {
     const updatedPersonList = personList.filter(
       (person) => person.id !== personId
@@ -41,25 +39,44 @@ const PersonList = ({
     handlePersonList(updatedPersonList);
   };
 
-  const AddToDeleteList = (personToAdd) => {
-    const updatedDeleteList = [...deleteList, personToAdd];
-    handleDeleteList(updatedDeleteList);
+  const [checked, setChecked] = useState({});
+  const [headChecked, setHeadChecked] = useState(false);
+
+  const handleCheckbox = (personId) => {
+    setChecked({ ...checked, [personId]: !checked[personId] });
   };
 
-  const RemoveFromDeleteList = (personToRemove) => {
-    const updatedDeleteList = deleteList.filter(
-      (entry) => entry.id !== personToRemove.id
-    );
-    handleDeleteList(updatedDeleteList);
-  };
-
-  const [HeadChecked, setHeadChecked] = useState(false);
   const handleHeadCheckbox = () => {
-    setHeadChecked((checked) => !checked);
+    const updatedHeadChecked = !headChecked;
+    setHeadChecked(updatedHeadChecked);
+    const checkList = {};
+    curRecords.map((person) => (checkList[person.id] = updatedHeadChecked));
+    setChecked(checkList);
+  };
+
+  const handleMultipleDelete = () => {
+    const selectList = []
+    for(const key in checked){
+      if(checked[key]){
+        // add to selectList
+        selectList.push(key)
+      }
+
+    }
+
+    // get updatedlist
+    const updatedPersonList = personList.filter(
+      (person) => !selectList.includes(person.id)
+    );
+    // update the list
+    handlePersonList(updatedPersonList);
   };
 
   return (
     <>
+      <button onClick={handleMultipleDelete} disabled={!checked}>
+        <MdDelete />
+      </button>
       <table id="persons">
         <thead>
           <tr>
@@ -67,7 +84,7 @@ const PersonList = ({
               <input
                 onChange={handleHeadCheckbox}
                 type="checkbox"
-                checked={HeadChecked}
+                checked={headChecked}
               />
             </th>
             <th>Name</th>
@@ -83,9 +100,8 @@ const PersonList = ({
               personData={person}
               handleEdit={updatePerson}
               handleDelete={deletePerson}
-              AddToDeleteList={AddToDeleteList}
-              RemoveFromDeleteList={RemoveFromDeleteList}
-              HeadChecked={HeadChecked}
+              checked={!!checked[person.id]}
+              handleCheckbox={handleCheckbox}
             />
           ))}
         </tbody>

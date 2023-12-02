@@ -34,7 +34,7 @@ const Pagination = ({ nPages, currentPage, updatePage }) => {
             </button>
           </li>
           {pageNumbers.map((pageNumber) => (
-            <li>
+            <li key={pageNumber}>
               <button className="page-item" onClick={() => updatePage(pageNumber)}>
                 {pageNumber}
               </button>
