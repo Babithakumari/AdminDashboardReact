@@ -1,7 +1,14 @@
 import Person from "./Person";
+import { useState } from "react";
+
 import "./styles.css";
 
-const PersonList = ({ personList, handlePersonList }) => {
+const PersonList = ({
+  personList,
+  handlePersonList,
+  deleteList,
+  handleDeleteList,
+}) => {
   const updatePerson = (updatedPerson) => {
     const updatedPersonList = personList.map((person) =>
       person.id === updatedPerson.id ? updatedPerson : person
@@ -16,11 +23,34 @@ const PersonList = ({ personList, handlePersonList }) => {
     handlePersonList(updatedPersonList);
   };
 
+  const AddToDeleteList = (personToAdd) => {
+    const updatedDeleteList = [...deleteList, personToAdd];
+    handleDeleteList(updatedDeleteList);
+  };
+
+  const RemoveFromDeleteList = (personToRemove) => {
+    const updatedDeleteList = deleteList.filter(
+      (entry) => entry.id !== personToRemove.id
+    );
+    handleDeleteList(updatedDeleteList);
+  };
+
+  const [HeadChecked, setHeadChecked] = useState(false);
+  const handleHeadCheckbox = () => {
+    setHeadChecked((checked) => !checked);
+  };
+
   return (
     <table id="persons">
       <thead>
         <tr>
-          <th><input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"/></th>
+          <th>
+            <input
+              onChange={handleHeadCheckbox}
+              type="checkbox"
+              checked={HeadChecked}
+            />
+          </th>
           <th>Name</th>
           <th>Email</th>
           <th>Role</th>
@@ -34,6 +64,9 @@ const PersonList = ({ personList, handlePersonList }) => {
             personData={person}
             handleEdit={updatePerson}
             handleDelete={deletePerson}
+            AddToDeleteList={AddToDeleteList}
+            RemoveFromDeleteList={RemoveFromDeleteList}
+            HeadChecked={HeadChecked}
           />
         ))}
       </tbody>
