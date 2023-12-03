@@ -1,5 +1,5 @@
 import Person from "./Person";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "./styles.css";
 import Pagination from "./Pagination";
@@ -14,7 +14,7 @@ const PersonList = ({ personList, handlePersonList }) => {
   // get records for current page
   const curRecords = personList.slice(firstIndex, lastIndex);
   // calculate number of pages
-  const nPages = Math.ceil(personList.length / recordsPerPage);
+  const nPages = Math.ceil(personList.length / recordsPerPage) || 1;
 
   // function handler to updatePage
   const updatePage = (pageIndex) => {
@@ -39,6 +39,7 @@ const PersonList = ({ personList, handlePersonList }) => {
 
   const [checked, setChecked] = useState({});
   const [headChecked, setHeadChecked] = useState(false);
+  const [multiDeleteDisable, setMultiDeleteDisable] = useState(true);
 
   const handleCheckbox = (personId) => {
     const value = !checked[personId];
@@ -49,11 +50,11 @@ const PersonList = ({ personList, handlePersonList }) => {
     const updatedHeadChecked = !headChecked;
     setHeadChecked(updatedHeadChecked);
     const checkList = {};
+    // for every record, add an entry (id,val)
     curRecords.map((person) => (checkList[person.id] = updatedHeadChecked));
     setChecked(checkList);
   };
-  
-  
+
   const handleMultipleDelete = () => {
     const selectList = [];
     for (const key in checked) {
@@ -62,23 +63,30 @@ const PersonList = ({ personList, handlePersonList }) => {
         selectList.push(key);
       }
     }
-
     // get updatedlist
     const updatedPersonList = personList.filter(
       (person) => !selectList.includes(person.id)
     );
+    console.log(updatedPersonList);
     // update the list
     handlePersonList(updatedPersonList);
-    // reset head checkbox
+    // reset head checkbox and other checkboxes
     setHeadChecked(false);
+    setChecked({});
   };
+
+  useEffect(() => {
+    setMultiDeleteDisable(!Object.values(checked).includes(true));
+  }, [checked]);
+
+  // when current page has no records(all deleted) go to 1st apge
 
   return (
     <>
       <button
         id="multiple-delete-btn"
         onClick={handleMultipleDelete}
-        disabled={!Object.values(checked).includes(true)}
+        disabled={multiDeleteDisable}
       >
         <MdDeleteOutline />
       </button>

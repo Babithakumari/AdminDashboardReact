@@ -1,8 +1,7 @@
 import { useState } from "react";
 import "./styles.css";
 
-
-const SearchBar = ({ personList, handlePersonList }) => {
+const SearchBar = ({ personList, handleFilterPersonList }) => {
   const [searchText, setSearchText] = useState("");
 
   const onChangeHandler = (e) => {
@@ -10,17 +9,21 @@ const SearchBar = ({ personList, handlePersonList }) => {
   };
 
   const onSearch = () => {
-    const input = setSearchText(searchText.toLowerCase())
-    const filteredPersonList = personList.filter(
-      (person) => Object.values(person).some(val => val.toLowerCase().includes(searchText))
+    const input = setSearchText(searchText.toLowerCase());
+    const filteredList = personList.filter((person) =>
+      Object.values(person).some((val) =>
+        val.toLowerCase().includes(searchText)
+      )
     );
 
-    // if input is not empty, show only filtered list of persons
-    if (input !== "") {
-      handlePersonList(filteredPersonList)
-
+    // if input is empty, show all persons
+    if (input === "") {
+      handleFilterPersonList(personList);
     }
-    
+    // otherwise show only filtered list of persons
+    else {
+      handleFilterPersonList(filteredList);
+    }
   };
   return (
     <div>

@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState } from "react";
 import "./styles.css";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
@@ -8,12 +8,10 @@ const Person = ({
   handleEdit,
   handleDelete,
   checked,
-  handleCheckbox
+  handleCheckbox,
 }) => {
-
   const [editing, setEditing] = useState(false);
   const [newPerson, setNewPerson] = useState(personData);
-
 
   const onEdit = () => {
     setEditing(true);
@@ -33,14 +31,12 @@ const Person = ({
   const handleInputChange = (e) => {
     setNewPerson({ ...newPerson, [e.target.name]: e.target.value });
   };
-  
-  
-  
-
-  
 
   return (
-    <tr className={`${checked ? "checked" : "unchecked"} ${editing ? "editing" : "not-editing"}`}
+    <tr
+      className={`${checked ? "checked" : "unchecked"} ${
+        editing ? "editing" : "not-editing"
+      }`}
     >
       <td>
         <input
@@ -52,7 +48,7 @@ const Person = ({
       </td>
       <td>
         <input
-          type="text" 
+          type="text"
           name="name"
           disabled={!editing}
           value={newPerson.name}
@@ -61,7 +57,7 @@ const Person = ({
       </td>
       <td>
         <input
-          type="text" 
+          type="text"
           name="email"
           disabled={!editing}
           value={newPerson.email}
@@ -70,7 +66,7 @@ const Person = ({
       </td>
       <td>
         <input
-          type="text" 
+          type="text"
           name="role"
           disabled={!editing}
           value={newPerson.role}
