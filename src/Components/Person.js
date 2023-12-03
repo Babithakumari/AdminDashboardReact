@@ -40,7 +40,8 @@ const Person = ({
   
 
   return (
-    <tr className={checked ? "checked" : "unchecked"}>
+    <tr className={`${checked ? "checked" : "unchecked"} ${editing ? "editing" : "not-editing"}`}
+    >
       <td>
         <input
           type="checkbox"
@@ -51,6 +52,7 @@ const Person = ({
       </td>
       <td>
         <input
+          type="text" 
           name="name"
           disabled={!editing}
           value={newPerson.name}
@@ -59,6 +61,7 @@ const Person = ({
       </td>
       <td>
         <input
+          type="text" 
           name="email"
           disabled={!editing}
           value={newPerson.email}
@@ -67,6 +70,7 @@ const Person = ({
       </td>
       <td>
         <input
+          type="text" 
           name="role"
           disabled={!editing}
           value={newPerson.role}

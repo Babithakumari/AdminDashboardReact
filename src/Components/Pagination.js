@@ -22,14 +22,15 @@ const Pagination = ({ nPages, currentPage, updatePage }) => {
     };
     return (
       <footer>
+        <p>Page {currentPage} of {nPages}</p>
         <ul className="page-list">
           <li>
-            <button className="page-item" onClick={() => updatePage(1)} disabled={currentPage===1}>
+            <button className="page-item first-page" onClick={() => updatePage(1)} disabled={currentPage===1}>
               {first}
             </button>
           </li>
           <li>
-            <button className="page-item" onClick={() => prevPage()} disabled={currentPage===1}>
+            <button className="page-item prev-page" onClick={() => prevPage()} disabled={currentPage===1}>
               {prev}
             </button>
           </li>
@@ -41,12 +42,12 @@ const Pagination = ({ nPages, currentPage, updatePage }) => {
             </li>
           ))}
           <li>
-            <button className="page-item" onClick={() => nextPage()} disabled={currentPage===nPages}>
+            <button className="page-item next-page" onClick={() => nextPage()} disabled={currentPage===nPages}>
               {next}
             </button>
           </li>
           <li>
-            <button className="page-item" onClick={() => updatePage(nPages)} disabled={currentPage===nPages}>
+            <button className="page-item last-page" onClick={() => updatePage(nPages)} disabled={currentPage===nPages}>
               {last}
             </button>
           </li>

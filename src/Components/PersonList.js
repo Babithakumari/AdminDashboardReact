@@ -1,12 +1,11 @@
 import Person from "./Person";
-import { useState} from "react";
+import { useState } from "react";
 
 import "./styles.css";
 import Pagination from "./Pagination";
-import { MdDelete } from "react-icons/md";
+import { MdDeleteOutline } from "react-icons/md";
 
 const PersonList = ({ personList, handlePersonList }) => {
-  
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(10);
   const lastIndex = currentPage * recordsPerPage;
@@ -16,7 +15,6 @@ const PersonList = ({ personList, handlePersonList }) => {
   const curRecords = personList.slice(firstIndex, lastIndex);
   // calculate number of pages
   const nPages = Math.ceil(personList.length / recordsPerPage);
-  console.log(nPages);
 
   // function handler to updatePage
   const updatePage = (pageIndex) => {
@@ -43,7 +41,8 @@ const PersonList = ({ personList, handlePersonList }) => {
   const [headChecked, setHeadChecked] = useState(false);
 
   const handleCheckbox = (personId) => {
-    setChecked({ ...checked, [personId]: !checked[personId] });
+    const value = !checked[personId];
+    setChecked({ ...checked, [personId]: value });
   };
 
   const handleHeadCheckbox = () => {
@@ -53,15 +52,15 @@ const PersonList = ({ personList, handlePersonList }) => {
     curRecords.map((person) => (checkList[person.id] = updatedHeadChecked));
     setChecked(checkList);
   };
-
+  
+  
   const handleMultipleDelete = () => {
-    const selectList = []
-    for(const key in checked){
-      if(checked[key]){
+    const selectList = [];
+    for (const key in checked) {
+      if (checked[key]) {
         // add to selectList
-        selectList.push(key)
+        selectList.push(key);
       }
-
     }
 
     // get updatedlist
@@ -70,42 +69,50 @@ const PersonList = ({ personList, handlePersonList }) => {
     );
     // update the list
     handlePersonList(updatedPersonList);
+    // reset head checkbox
+    setHeadChecked(false);
   };
 
   return (
     <>
-      <button onClick={handleMultipleDelete} disabled={!checked}>
-        <MdDelete />
+      <button
+        id="multiple-delete-btn"
+        onClick={handleMultipleDelete}
+        disabled={!Object.values(checked).includes(true)}
+      >
+        <MdDeleteOutline />
       </button>
-      <table id="persons">
-        <thead>
-          <tr>
-            <th>
-              <input
-                onChange={handleHeadCheckbox}
-                type="checkbox"
-                checked={headChecked}
+      <div id="table-parent">
+        <table id="persons-table">
+          <thead>
+            <tr>
+              <th>
+                <input
+                  onChange={handleHeadCheckbox}
+                  type="checkbox"
+                  checked={headChecked}
+                />
+              </th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {curRecords.map((person) => (
+              <Person
+                key={person.id}
+                personData={person}
+                handleEdit={updatePerson}
+                handleDelete={deletePerson}
+                checked={!!checked[person.id]}
+                handleCheckbox={handleCheckbox}
               />
-            </th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {curRecords.map((person) => (
-            <Person
-              key={person.id}
-              personData={person}
-              handleEdit={updatePerson}
-              handleDelete={deletePerson}
-              checked={!!checked[person.id]}
-              handleCheckbox={handleCheckbox}
-            />
-          ))}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <Pagination
         nPages={nPages}
         currentPage={currentPage}
